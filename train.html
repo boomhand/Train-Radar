@@ -2,7 +2,7 @@
 <meta charset="utf8">
 <head>
 	<title>Train Radar </title>
-	<!--<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>-->
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<style type="text/css">
 		div{
 			
@@ -65,19 +65,48 @@
 			<p><h2>Heure de départ : </h2><span id="heure_depart">19h04</span>
 			</p>
 		</div>
-		<div id="arrivée" class="desserte">
+		<div id="arrivee" class="desserte">
 			<p><h2>gare de départ:</h2>
-			<span id="gare_depart">
+			<span id="gare_arrivee">
 				Reims
 			</span>
 			</p>
-			<p><h2>Heure de départ : </h2><span id="heure_depart">19h11
+			<p><h2>Heure de départ : </h2><span id="heure_arrivee">19h11
 			</span>
 			</p>
 		</div>
 
 	</div>
-		<div></div>
+		<div id="test"></div>
+		<form id="recherche_train_form">
+			<input id="numero_input"  type="text">
+			<input type="button" value="Submit" onclick="get_data()">
+		</form>
+		
 	</div>
-
+  
+	<script type="text/javascript">
+	var DEFAULT_TRAIN_NUMBER = 840525;
+	get_data();
+	function get_data(){
+		numero = $('input:text').val();
+		if(numero=="") numero = DEFAULT_TRAIN_NUMBER;
+	$.ajax({
+		url: "http://localhost:8000",
+		data: {"numero": numero},
+		dataType: 'jsonp'
+	}).done( function( data ) {
+		$('#numero').text(numero);
+		console.log("mode : " +data['mode']);
+		$('#mode').text(data['mode']);
+		$('#compagnie').text(data['compagnie']);
+		$('#gare_depart').text(data['gare_depart']);
+		$('#heure_depart').text(data['heure_depart']);
+		$('#gare_arrivee').text(data['gare_arrivee']);
+		$('#heure_arrivee').text(data['heure_arrivee']);
+		}
+		);
+}
+	
+	</script>
 </body>
